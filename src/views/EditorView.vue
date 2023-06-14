@@ -112,7 +112,7 @@ router.beforeEach((to, from, next) => {
                         </template>
                       </v-expansion-panel-title>
 
-                      <v-expansion-panel-text v-bind:class='{ "error": error_at == index }'>
+                      <v-expansion-panel-text>
                         <div id="app" v-cloak style="max-width:900px">
                           <v-col>
 

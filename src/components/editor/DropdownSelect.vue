@@ -34,7 +34,7 @@ export default {
   props: {
     prop: '',
     selectionsProp: {
-      type: Array,// if this is an array or use **type: Object** if that's an object
+      type: Array,
       default: []
     },
     is_required: {
