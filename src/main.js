@@ -20,6 +20,11 @@ import LongTextAnswer2 from './components/client/LongTextAnswer.vue'
 import SingleSelectAnswer2 from './components/client/SingleSelectAnswer.vue'
 import MultiSelectAnswer2 from './components/client/MultiSelectAnswer.vue'
 import LinearScaleAnswer2 from './components/client/LinearScaleAnswer.vue'
+import ShortTextAnswer3 from './components/editor/ShortTextAnswer.vue'
+import LongTextAnswer3 from './components/editor/LongTextAnswer.vue'
+import SingleSelectAnswer3 from './components/editor/SingleSelectAnswer.vue'
+import MultiSelectAnswer3 from './components/editor/MultiSelectAnswer.vue'
+import LinearScaleAnswer3 from './components/editor/LinearScaleAnswer.vue'
 
 const routes = [
   {
@@ -65,6 +70,11 @@ const app = createApp(App)
   .component('SingleSelectAnswer2', SingleSelectAnswer2)
   .component('MultiSelectAnswer2', MultiSelectAnswer2)
   .component('LinearScaleAnswer2', LinearScaleAnswer2)
+  .component('ShortTextAnswer3', ShortTextAnswer3)
+  .component('LongTextAnswer3', LongTextAnswer3)
+  .component('SingleSelectAnswer3', SingleSelectAnswer3)
+  .component('MultiSelectAnswer3', MultiSelectAnswer3)
+  .component('LinearScaleAnswer3', LinearScaleAnswer3)
 
 const vuetify = createVuetify({
   components,

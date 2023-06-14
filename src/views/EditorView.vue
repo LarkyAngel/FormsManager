@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute } from 'vue-router'
-import { ref, reactive, onBeforeMount } from 'vue'
+import { ref, reactive, onBeforeMount, markRaw, resolveComponent } from 'vue'
 import Draggable from "../components/editor/DraggableContainer.vue";
 import DropdownSelect from "../components/editor/DropdownSelect.vue"
 import router from './../router/index.js'
@@ -13,6 +13,8 @@ const form = reactive({})
 const is_loaded = ref(false)
 const error_at = ref(-1)
 
+const selected = ref('')
+
 onBeforeMount(async () => {
   form_id.value = route.query.form_id
 
@@ -21,6 +23,11 @@ onBeforeMount(async () => {
 
   is_loaded.value = true
 })
+
+
+function search(x) {
+  return markRaw(resolveComponent(x))
+}
 
 async function saveChanges() {
   let result_questions = []
@@ -108,8 +115,16 @@ router.beforeEach((to, from, next) => {
                       </v-expansion-panel-title>
                       <v-expansion-panel-text v-bind:class='{ "error": error_at == index }'>
                         <div id="app" v-cloak style="max-width:900px">
-                          <dropdown-select v-model:is_required="item.is_required" v-model:prop="item.type"
-                            v-model:selectionsProp="item.options"></dropdown-select>
+                          <v-col>
+                          <dropdown-select v-model:prop="item.type" v-model:is_required="item.is_required">
+                          </dropdown-select>
+
+                          <div style="width:100%">
+                            <keep-alive>
+                              <component :is="search(item.type+'3')" v-model:selections="item.options" />
+                            </keep-alive>
+                          </div>
+                          </v-col>
                         </div>
                       </v-expansion-panel-text>
                     </v-expansion-panel>
