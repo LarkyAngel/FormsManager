@@ -1,24 +1,20 @@
 <template>
   <div style="min-width:700px">
-  <v-col>
-    
-  <v-row justify="space-between" align="center">
-    <v-select
-      label="Select"
-      :items="['ShortTextAnswer', 'LongTextAnswer', 'SingleSelectAnswer', 'MultiSelectAnswer', 'LinearScaleAnswer']"
-      variant="solo"
-      v-model="model"
-    ></v-select><v-spacer></v-spacer>
-    <v-switch label="Required" v-model="is_required_real"></v-switch>
-</v-row>
-<div style="width:100%">
-  <keep-alive>
-  <component :is=model v-model:selections="selections"/>
-</keep-alive>
-</div>
-</v-col>
-</div>
+    <v-col>
 
+      <v-row justify="space-between" align="center">
+        <v-select label="Select"
+          :items="['ShortTextAnswer', 'LongTextAnswer', 'SingleSelectAnswer', 'MultiSelectAnswer', 'LinearScaleAnswer']"
+          variant="solo" v-model="model"></v-select><v-spacer></v-spacer>
+        <v-switch label="Required" v-model="is_required_real"></v-switch>
+      </v-row>
+      <div style="width:100%">
+        <keep-alive>
+          <component :is=model v-model:selections="selections" />
+        </keep-alive>
+      </div>
+    </v-col>
+  </div>
 </template>
 
 <script>
@@ -33,68 +29,65 @@ import _ from "lodash";
 export default {
   name: "DropdownSelect",
   components: {
-        ShortTextAnswer,
-        LongTextAnswer,
-        SingleSelectAnswer,
-        MultiSelectAnswer,
-        LinearScaleAnswer
+    ShortTextAnswer,
+    LongTextAnswer,
+    SingleSelectAnswer,
+    MultiSelectAnswer,
+    LinearScaleAnswer
   },
   props: {
     prop: '',
     selectionsProp: {
-     type: Array,// if this is an array or use **type: Object** if that's an object
-     default: []
+      type: Array,// if this is an array or use **type: Object** if that's an object
+      default: []
     },
     is_required: {
       type: Boolean,
       default: false
     }
   },
-  data: function() {
+  data: function () {
     return {
       selections: [],
       dropdownPopoverShow: false
     }
   },
-  computed:{ 
+  computed: {
     model: {
-    	get() { return this.prop },
+      get() { return this.prop },
       set(val) { this.$emit('update:prop', val) },
-      }
+    }
   },
   watch: {
     selections: {
-      handler: function(val, oldVal) {
+      handler: function (val, oldVal) {
         console.log(val)
         this.update()
       },
       deep: true
     }
   },
-      setup(props,context) {
-      const is_required_real = ref(props.is_required)
-          watch(is_required_real, (currentValue, oldValue) => {
-            console.log('w')
+  setup(props, context) {
+    const is_required_real = ref(props.is_required)
+    watch(is_required_real, (currentValue, oldValue) => {
+      console.log('w')
       context.emit('update:is_required', currentValue)
     })
-      return {
-          is_required_real
-        }
-      },
+    return {
+      is_required_real
+    }
+  },
   mounted() {
     this.model = this.prop
     this.selections.length = 0
     for (let i = 0; i < this.selectionsProp.length; ++i)
-        this.selections.push(this.selectionsProp[i])
-  },
-  beforeMount() {
-    this.init()
+      this.selections.push(this.selectionsProp[i])
   },
   emits: [
     'update:prop',
     'update:is_required',
     'update:selectionsProp'
-],
+  ],
   methods: {
     update() {
       while (this.selectionsProp > 0) {

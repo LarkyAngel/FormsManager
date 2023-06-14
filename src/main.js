@@ -25,26 +25,26 @@ const routes = [
   {
     path: '/',
     component: Home,
-    children: [ {
+    children: [{
       path: '/about',
       component: About,
       children: [
-      {
-        path: '/about/viewer/',
-        component: Viewer
-      },
-      {
-        path: '/about/client/',
-        component: Client
-      }
+        {
+          path: '/about/viewer/',
+          component: Viewer
+        },
+        {
+          path: '/about/client/',
+          component: Client
+        }
+      ]
+    },
+    {
+      path: '/editor/',
+      component: Editor
+    }
     ]
-  },
-  {
-    path: '/editor/',
-    component: Editor
   }
-]
-}
 ]
 
 import './assets/main.css'
@@ -73,7 +73,6 @@ const vuetify = createVuetify({
 
 app.use(vuetify)
 
-app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
