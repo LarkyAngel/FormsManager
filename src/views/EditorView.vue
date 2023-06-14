@@ -48,7 +48,7 @@ async function saveChanges() {
     }
   }
   console.log(error_at.value)
-
+console.log(result_questions[0].options[0])
   if (error_at.value == -1) {
     const get_answers = () => new Promise(r => {
       let result = []
@@ -74,7 +74,7 @@ async function saveChanges() {
 }
 
 router.beforeEach((to, from, next) => {
-  if (error_at.value == -1) {
+  if (from.path != '/editor' || (error_at.value == -1 || to.path != '/')) {
     next()
   }
 })
@@ -173,5 +173,9 @@ router.beforeEach((to, from, next) => {
     align-items: center;
 
   }
+}
+
+.error {
+  background-color: rgb(195, 164, 164)
 }
 </style>

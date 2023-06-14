@@ -66,7 +66,13 @@ async function saveAnswer() {
       const type = form.value.questions[i].type
       console.log(answer.value.data[i])
       if (type == 'MultiSelectAnswer') {
-        if (answer.value.data[i] == []) {
+        let ok = false
+        for (let j = 0; j < answer.value.data[i].length; ++j) {
+          if (answer.value.data[i][j]) {
+            ok = true
+          }
+        }
+        if (!ok) {
           error_at.value = i
           break;
         }
@@ -98,7 +104,8 @@ async function saveAnswer() {
 }
 
 router.beforeEach((to, from, next) => {
-  if (error_at.value == -1) {
+  console.log(error_at.value)
+  if (from.path != '/about/client' || error_at.value == -1 || to.path != '/about') {
     next()
   }
 })

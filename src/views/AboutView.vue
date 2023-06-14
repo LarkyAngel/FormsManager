@@ -12,7 +12,6 @@
           }
         }">
           {{ answer.name }}
-          {{ answer.answer_id }}
         </router-link>
 
         <router-view />
