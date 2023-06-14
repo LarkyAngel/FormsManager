@@ -19,7 +19,7 @@ onBeforeMount(async () => {
   })
 
   forms.value = await get_forms()
-  forms.value.sort(function(x,y){return y.form_id - x.form_id})
+  forms.value.sort(function (x, y) { return y.form_id - x.form_id })
   forms.value.reverse()
   is_loaded.value = true
 })
@@ -71,6 +71,26 @@ async function removeForm(this_form_id) {
   const remove_form = () =>
     new Promise(r => { r(localStorage.removeItem('form ' + this_form_id)) })
   await remove_form()
+
+  const get_answers = () => new Promise(r => {
+
+    let result = []
+    Object.keys(localStorage).forEach((key) => {
+
+      let words = key.split(' ')
+      if (words[0] === 'answer' && words[1] === this_form_id.toString()) {
+        result.push(JSON.parse(localStorage.getItem(key)))
+      }
+    })
+    r(result)
+  })
+
+  const answers = await get_answers()
+  for (let i = 0; i < answers.length; ++i) {
+    const remove_answer = () =>
+      new Promise(r => { r(localStorage.removeItem('answer ' + this_form_id + ' ' + answers[i].answer_id)) })
+    await remove_answer()
+  }
 }
 </script>
 
