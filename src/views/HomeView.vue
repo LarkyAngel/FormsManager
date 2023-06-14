@@ -19,7 +19,7 @@ onBeforeMount(async () => {
   })
 
   forms.value = await get_forms()
-  forms.sort(function(x,y){return y["form_id"]-x["form_id"]})
+  forms.value.sort(function(x,y){return y.form_id - x.form_id})
   forms.value.reverse()
   is_loaded.value = true
 })

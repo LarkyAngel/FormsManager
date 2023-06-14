@@ -49,7 +49,7 @@ onBeforeMount(async () => {
   form_id.value = route.query.form_id
 
   const get_answers = () => new Promise(r => {
-    
+
     let result = []
     Object.keys(localStorage).forEach((key) => {
 
@@ -62,6 +62,8 @@ onBeforeMount(async () => {
   })
 
   answers.value = await get_answers()
+  answers.value.sort(function(x,y){return y.answer_id- x.answer_id})
+  answers.reverse()
 })
 
 async function deleteAnswer(answer_id) {
