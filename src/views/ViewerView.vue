@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute } from 'vue-router'
-import { ref, watch, reactive, resolveComponent, markRaw, onBeforeMount } from 'vue'
+import { ref, reactive, resolveComponent, markRaw, onBeforeMount } from 'vue'
 
 const route = useRoute()
 const form_id = ref(0)
@@ -12,7 +12,6 @@ const answer = reactive([])
 const is_loaded = ref(false)
 
 const expanded = reactive([])
-
 
 onBeforeMount(async () => {
   form_id.value = route.query.form_id
@@ -27,7 +26,6 @@ onBeforeMount(async () => {
 
   const get_answer = () => new Promise(r => { r(localStorage.getItem('answer ' + form_id.value + ' ' + answer_id.value)) })
   answer.value = JSON.parse(await get_answer())
-  console.log(answer.value.data[0])
   is_loaded.value = true
 })
 
@@ -47,17 +45,16 @@ function search(x) {
             <v-expansion-panel style="minWidth: 900px" :key="index">
 
               <v-expansion-panel-title>
-
                 <h1 style="font-size:20px"> {{ question.title }} {{ question.is_required ? '*' : '' }}</h1>
-
               </v-expansion-panel-title>
-              <v-expansion-panel-text>
 
+              <v-expansion-panel-text>
                 <keep-alive>
                   <component :is="search(question.type+'1')" :answer="answer.value.data[index]"
                     :options="question.options" />
                 </keep-alive>
               </v-expansion-panel-text>
+
             </v-expansion-panel>
           </div>
         </div>
@@ -65,6 +62,7 @@ function search(x) {
     </div>
     <v-card-actions>
       <v-spacer></v-spacer>
+
       <router-link :to="{
         path: '/about',
         query: {
@@ -76,6 +74,7 @@ function search(x) {
           <v-icon icon="mdi-chevron-right" end></v-icon>
         </v-btn>
       </router-link>
+      
     </v-card-actions>
   </div>
 </template>

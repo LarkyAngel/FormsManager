@@ -8,6 +8,7 @@
           variant="solo" v-model="model"></v-select><v-spacer></v-spacer>
         <v-switch label="Required" v-model="is_required_real"></v-switch>
       </v-row>
+
     </v-col>
   </div>
 </template>

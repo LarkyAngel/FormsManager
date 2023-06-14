@@ -24,12 +24,12 @@ onBeforeMount(async () => {
   is_loaded.value = true
 })
 
-
 function search(x) {
   return markRaw(resolveComponent(x))
 }
 
 async function saveChanges() {
+
   let result_questions = []
   for (let i = 0; i < form.value.questions.length; ++i) {
     if (form.value.questions[i].data == null) {
@@ -38,29 +38,31 @@ async function saveChanges() {
       result_questions.push(form.value.questions[i].data)
     }
   }
+
   error_at.value = -1
   for (let i = 0; i < result_questions.length; ++i) {
-    console.log(result_questions[i].options.length)
+
     const type = result_questions[i].type
     if ((type == 'SingleSelectAnswer' || type == 'MultiSelectAnswer') && result_questions[i].options.length == 0) {
       error_at.value = i;
       break;
     }
   }
-  console.log(error_at.value)
-console.log(result_questions[0].options[0])
+
   if (error_at.value == -1) {
     const get_answers = () => new Promise(r => {
+
       let result = []
       Object.keys(localStorage).forEach((key) => {
+
         let words = key.split(' ')
         if (words[0] === 'answer' && words[1] === form_id.value.toString()) {
-          console.log(JSON.parse(localStorage.getItem(key)))
           result.push(JSON.parse(localStorage.getItem(key)))
         }
       })
       r(result)
     })
+
     const answers = await get_answers()
     for (let i = 0; i < answers.length; ++i) {
       const remove_answer = () =>
@@ -74,7 +76,8 @@ console.log(result_questions[0].options[0])
 }
 
 router.beforeEach((to, from, next) => {
-  if (from.path != '/editor' || (error_at.value == -1 || to.path != '/')) {
+  if (from.path != '/editor' || error_at.value == -1 || to.path != '/') {
+    error_at.value = -1
     next()
   }
 })
@@ -98,35 +101,34 @@ router.beforeEach((to, from, next) => {
                 <v-expansion-panels>
                   <div class="draggable-item">
                     <v-expansion-panel style="minWidth: 900px">
+
                       <v-expansion-panel-title>
-
-
                         <template v-slot:default="{ expanded }">
                           <v-row no-gutters>
                             <v-col cols="0" class="d-flex justify-start">
-
                               <v-text-field v-model="item.title" color="primary" variant="underlined"></v-text-field>
-
-                            </v-col>
-                            <v-col cols="8" class="text-grey">
                             </v-col>
                           </v-row>
                         </template>
                       </v-expansion-panel-title>
+
                       <v-expansion-panel-text v-bind:class='{ "error": error_at == index }'>
                         <div id="app" v-cloak style="max-width:900px">
                           <v-col>
-                          <dropdown-select v-model:prop="item.type" v-model:is_required="item.is_required">
-                          </dropdown-select>
 
-                          <div style="width:100%">
-                            <keep-alive>
-                              <component :is="search(item.type+'3')" v-model:selections="item.options" />
-                            </keep-alive>
-                          </div>
+                            <dropdown-select v-model:prop="item.type" v-model:is_required="item.is_required">
+                            </dropdown-select>
+
+                            <div style="width:100%">
+                              <keep-alive>
+                                <component :is="search(item.type+'3')" v-model:selections="item.options" />
+                              </keep-alive>
+                            </div>
+
                           </v-col>
                         </div>
                       </v-expansion-panel-text>
+
                     </v-expansion-panel>
                   </div>
                 </v-expansion-panels>
@@ -137,6 +139,7 @@ router.beforeEach((to, from, next) => {
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
+          
           <router-link :to="{
             path: '/'
           }">

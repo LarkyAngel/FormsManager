@@ -1,76 +1,14 @@
-<template>
-  <v-row no-gutters>
-    <div style="padding-top:20px">{{ this.options[0].lower_bound_label }}</div>
-
-    <div v-for="(selection, index) in this.linear_scale_options">
-
-      <label>{{ selection.description }}<br />
-        <input type="radio" :id="selection.id" :value="selection.selectionId" v-model="choice.selected" />
-      </label>
-
-    </div>
-
-    <div style="padding-top:20px">{{ this.options[0].upper_bound_label }}</div>
-  </v-row>
-</template>
-<script>
-import { watch, ref } from "vue"
-import _ from "lodash";
-export default {
-  name: 'SingleSelectAnswer',
-  props: {
-    modelValue: '',
-    options: {
-      type: Array,
-      default: []
-    }
-  },
-  data: function () {
-    return {
-      linear_scale_options: []
-    }
-  },
-  emits: [
-    'update:modelValue'
-  ],
-  mounted() {
-    for (let i = this.options[0].lower_bound; i <= this.options[0].upper_bound; ++i) {
-      this.linear_scale_options.push({
-        'selectionId': i.toString(),
-        'description': i.toString()
-      })
-    }
-  },
-  setup(props, context) {
-    const choice = ref({})
-    watch(() => _.cloneDeep(choice), (currentValue, oldValue) => {
-      context.emit('update:modelValue', currentValue.value.selected)
-    })
-    return {
-      choice
-    }
-  }
-}
-</script>
-<style lang="scss">
 $tl: 0.6s; // transition length
 
-label {
-  float: left;
-  padding: 0 1em;
-  text-align: center;
-}
-
-#row {
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: -30px;
-  margin-bottom: -50px;
+.v-row {
+  padding-top: 0px;
+  margin: -12px;
 }
 
 .v-text-field {
   padding: 10px;
 }
+
 
 .search-box {
   transition: width $tl, border-radius $tl, background $tl, box-shadow $tl;
@@ -168,4 +106,90 @@ label {
   white-space: nowrap;
   padding-right: 15px;
 }
-</style>
+
+:root {
+  --form-control-color: #0970e6;
+  --form-control-disabled: #959495;
+  --current-color: #adadad;
+  --font-size: 1.5em;
+  --transition-time: 120ms;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+form {
+  display: grid;
+  place-content: center;
+  min-height: 100vh;
+}
+
+.form-control {
+  font-family: system-ui, sans-serif;
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+  line-height: 1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+}
+
+.form-control+.form-control {
+  margin-top: 1em;
+}
+
+.form-control--disabled {
+  color: var(--form-control-disabled);
+  cursor: not-allowed;
+}
+
+input[type="checkbox"] {
+  /* add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* remove most all native input styles */
+  appearance: none;
+  /* iOS < 15 */
+  background-color: var(--form-background);
+  /* not removed via appearance */
+  margin: 2.5em 0 0;
+
+  font: inherit;
+  color: var(--current-color);
+  width: 1em;
+  height: 1em;
+  border: 0.05em solid currentColor;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+  transition: var(--transition-time) background ease-in-out;
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]:checked {
+  border-color: transparent;
+  background-color: var(--form-control-color);
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.25em;
+  height: 0.25em;
+  transform: scale(0);
+  transition: var(--transition-time) transform ease-in-out;
+  box-shadow: inset 1em 1em white;
+  border-radius: 50%;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="checkbox"]:disabled {
+  --form-control-color: var(--form-control-disabled);
+
+  color: var(--form-control-disabled);
+  cursor: not-allowed;
+}
